@@ -162,7 +162,7 @@ jar_file () {
   elif [[ -f "$script_dir/.lib/$1/sbt-launch.jar" ]]; then
     echo "$script_dir/.lib/$1/sbt-launch.jar"
   else
-    echo "../lib/$1/sbt-launch.jar"
+    echo "./lib/$1/sbt-launch.jar"
   fi
 }
 
@@ -208,8 +208,13 @@ acquire_sbt_jar () {
     sbt_version=$sbt_release_version
   fi
 
+  echo $sbt_version
+  echo $script_path
+
   sbt_url="$(jar_url)"
   sbt_jar="$(jar_file $sbt_version)"
+  
+  echo "sbt_jar = $sbt_jar"
 
   [[ -f "$sbt_jar" ]] || download_url "$sbt_url" "$sbt_jar"
 }
@@ -389,6 +394,8 @@ EOM
 
 # pick up completion if present; todo
 [[ -f .sbt_completion.sh ]] && source .sbt_completion.sh
+
+echo "SBT_JAR = $sbt_jar"
 
 # no jar? download it.
 [[ -f "$sbt_jar" ]] || acquire_sbt_jar || {
