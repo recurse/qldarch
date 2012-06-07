@@ -1,3 +1,19 @@
 <lift:surround with="default" at="content">
-  <h2>Submit resource here!</h2>
+  <h2>Submit resource</h2>
+  <lift:snippet type="misc:upload" form="post" multipart="true">
+  <mychoice:post>
+  <p>
+  File name: <ulfield:file_name/><br />
+  MIME Type: <ulfield:mime_type/><br />
+  File length: <ulfield:length/><br />
+  MD5 Hash: <ulfield:md5/><br />
+  </p>
+  </mychoice:post>
+
+  <mychoice:get>
+  Select a file to upload: <ulreq:file_upload/><br />
+  <input type="submit" value="Upload File"/>
+  </mychoice:get>
+
+  </lift:snippet>
 </lift:surround>
