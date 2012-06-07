@@ -7,8 +7,6 @@ import sitemap.{SiteMap, Menu, Loc}
 import util.{NamedPF, Props}
 import net.metadata.qldarch.model.Resource
 
-
-
 class Boot {
   def boot {
     if (!DB.jndiJdbcConnAvailable_?) {
