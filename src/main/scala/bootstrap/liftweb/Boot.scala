@@ -44,6 +44,5 @@ class Boot {
     
     // set character encoding
     LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
-    
   }
 }
