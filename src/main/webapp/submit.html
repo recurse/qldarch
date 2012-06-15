@@ -1,18 +1,22 @@
 <lift:surround with="default" at="content">
-  <lift:snippet type="misc:upload" form="post" multipart="true">
-  <mychoice:post>
+  <lift:snippet type="UploadResource:render" form="post" multipart="true">
+  <uploadReq:post>
   <p>
-  File name: <ulfield:file_name/><br />
-  MIME Type: <ulfield:mime_type/><br />
-  File length: <ulfield:length/><br />
-  MD5 Hash: <ulfield:md5/><br />
+  File name: <request:file_name/><br />
+  MIME Type: <request:mime_type/><br />
+  File length: <request:length/><br />
+  MD5 Hash: <request:md5/><br />
   </p>
-  </mychoice:post>
+  </uploadReq:post>
 
-  <mychoice:get>
-  Select a file to upload: <ulreq:file_upload/><br />
-  <input type="submit" value="Upload File"/>
-  </mychoice:get>
+  <uploadReq:get>
+  Select a file to upload: <request:file_upload/><br />
+  Creator: <request:creator/><br />
+  Format: <request:format/><br />
+  Location: <request:location/><br />
+  Created Date: <request:createdDate/><br />
+  <request:submit/><br />
+  </uploadReq:get>
 
   </lift:snippet>
 </lift:surround>
