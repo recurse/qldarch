@@ -1,22 +1,22 @@
 <lift:surround with="default" at="content">
   <lift:snippet type="UploadResource:render" form="post" multipart="true">
-  <uploadReq:post>
+  <choose:post>
   <p>
   File name: <request:file_name/><br />
   MIME Type: <request:mime_type/><br />
   File length: <request:length/><br />
   MD5 Hash: <request:md5/><br />
   </p>
-  </uploadReq:post>
+  </choose:post>
 
-  <uploadReq:get>
-  Select a file to upload: <request:file_upload/><br />
+  <choose:get>
   Creator: <request:creator/><br />
   Format: <request:format/><br />
   Location: <request:location/><br />
   Created Date: <request:createdDate/><br />
+  Select a file to upload: <request:file_upload/><br />
   <request:submit/><br />
-  </uploadReq:get>
+  </choose:get>
 
   </lift:snippet>
 </lift:surround>

@@ -1,6 +1,7 @@
 package bootstrap.liftweb
 
 import net.liftweb._
+import net.liftweb.common.{Logger, Logback, Full}
 import mapper.{Schemifier, DB, StandardDBVendor, DefaultConnectionIdentifier}
 import net.liftweb.http.{LiftRules, NotFoundAsTemplate, ParsePath, OnDiskFileParamHolder}
 import sitemap.{SiteMap, Menu, Loc}
@@ -9,6 +10,9 @@ import net.metadata.qldarch.model.Resource
 
 class Boot {
   def boot {
+    val logUrl = LiftRules.getResource("/logback.xml")
+    logUrl.foreach { x => Logger.setup = Full(Logback.withFile(x)) }
+
     if (!DB.jndiJdbcConnAvailable_?) {
       val vendor =
         new StandardDBVendor(Props.get("db.driver") openOr "org.h2.Driver",

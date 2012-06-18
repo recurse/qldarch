@@ -6,7 +6,7 @@ import net.liftweb.common._
 import net.liftweb.http._
 import net.metadata.qldarch.model.Resource
 
-class UploadResource {
+class UploadResource extends Logger {
   private object theUpload extends RequestVar[Box[FileParamHolder]](Empty)
   private object theResource extends RequestVar[Box[Resource]](Empty)
 
@@ -16,6 +16,7 @@ class UploadResource {
   private var createdDate=""
 
   def doUpload () {
+    warn("doUpload called")
     val fileName = theUpload.is match {
       case Full(FileParamHolder(_, null, _, _)) => S.error("Empty resource file received")
       case Full(fileHolder @ FileParamHolder(_, mime, _, _)) => fileHolder match {
@@ -29,9 +30,9 @@ class UploadResource {
       location(location).createdDate(createdDate).fileName(fileName.toString()).saveMe))
   }
 
-  def render(xhtml: NodeSeq): NodeSeq = 
+  def render(xhtml: NodeSeq): NodeSeq =
     if (S.get_?)
-      bind("uploadReq", chooseTemplate("request", "get", xhtml),
+      bind("request", chooseTemplate("choose", "get", xhtml),
            "creator" -> SHtml.text(creator, creator = _),
            "format" -> SHtml.text(format, format = _),
            "location" -> SHtml.text(location, location = _),
@@ -40,7 +41,7 @@ class UploadResource {
            "submit" -> SHtml.submit("Submit Resource", doUpload)
            );
     else
-      bind("uploadReq", chooseTemplate("request", "post", xhtml),
+      bind("request", chooseTemplate("choose", "post", xhtml),
            "file_name" -> theResource.is.map(r => Text(r.fileName)),
            "creator" -> theResource.is.map(r => Text(r.creator)),
            "format" -> theResource.is.map(r => Text(r.format))
