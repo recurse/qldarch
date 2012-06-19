@@ -6,7 +6,7 @@ import mapper.{Schemifier, DB, StandardDBVendor, DefaultConnectionIdentifier}
 import net.liftweb.http.{LiftRules, NotFoundAsTemplate, ParsePath, OnDiskFileParamHolder}
 import sitemap.{SiteMap, Menu, Loc}
 import util.{NamedPF, Props}
-import net.metadata.qldarch.model.Resource
+import net.metadata.qldarch.model.{Resource, Person}
 
 class Boot {
   def boot {
@@ -27,7 +27,7 @@ class Boot {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, Resource)
+    Schemifier.schemify(true, Schemifier.infoF _, Resource, Person)
   
     // Make sure we cache uploads to disk
     LiftRules.handleMimeFile = OnDiskFileParamHolder.apply
@@ -36,8 +36,10 @@ class Boot {
     LiftRules.addToPackages("net.metadata.qldarch")
 
     // build sitemap
-    val entries = (List(Menu("Home") / "index",
-                        Menu("Submit Resource") / "submit" )) ::: Resource.menus
+    val entries = (List(Menu("Home") / "index")
+                        ) ::: Resource.menus :::
+                  (List(Menu("Submit Resource") / "submit")
+                        ) ::: Person.menus
     
     LiftRules.uriNotFound.prepend(NamedPF("404handler"){
       case (req,failure) => NotFoundAsTemplate(

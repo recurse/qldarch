@@ -1,5 +1,6 @@
 package net.metadata.qldarch.model
 
+import net.liftweb.common.Empty
 import net.liftweb.mapper._
 
 class Resource extends LongKeyedMapper[Resource]
@@ -11,7 +12,7 @@ class Resource extends LongKeyedMapper[Resource]
   object format extends MappedString(this, 50)
   object location extends MappedString(this, 100)
   object createdDate extends MappedString(this, 15)
-  object fileName extends MappedString(this, 25)
+  object fileName extends MappedString(this, 50)
 }
 
 object Resource extends Resource
@@ -19,4 +20,5 @@ object Resource extends Resource
     with CRUDify[Long,Resource] {
 
   override def dbTableName = "resources"
+  override def createMenuLoc = Empty
 }
