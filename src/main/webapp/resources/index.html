@@ -1,0 +1,30 @@
+<lift:surround with="default" at="content">
+  <table lift="Resources.list" class="show_all" id="show_all">
+    <thead>
+      <tr>
+        <th>Recorder</th><th>Location</th><th>Date Recorded</th><th>Format</th><th>File Name</th>
+        <th> </th>
+        <th> </th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr class="row">
+      <td class="recorder">Recorder</td>
+      <td class="location">Location</td>
+      <td class="date_recorded">Date recorded</td>
+      <td class="format">Format</td>
+      <td class="file_name">File Name</td>
+      <td class="view"><a class="link" href="/resources/view/1">View</a></td>
+      <td class="edit"><a class="link" href="/resources/edit/1">Edit</a></td>
+    </tr>
+    
+  </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"> </td>
+
+        <td colspan="3"> </td>
+      </tr>
+    </tfoot>
+  </table>
+</lift:surround>

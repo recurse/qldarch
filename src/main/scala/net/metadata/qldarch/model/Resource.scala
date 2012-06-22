@@ -21,4 +21,6 @@ object Resource extends Resource
 
   override def dbTableName = "resources"
   override def createMenuLoc = Empty
+  override def deleteMenuLoc = Empty
+  override def showAllMenuLoc = Empty
 }

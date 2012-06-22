@@ -15,6 +15,9 @@ class UploadResource extends Logger {
   private var location=""
   private var createdDate=""
 
+  // Replace this with Fedora Commons or some other repository
+  private val dataDir="data/"
+
   def doUpload () {
     warn("doUpload called")
     val fileName = theUpload.is match {
@@ -26,8 +29,9 @@ class UploadResource extends Logger {
       case _ => S.error("Error obtaining resource")
     }
     
-    theResource(Full(Resource.create.creator(creator).format(format).
-      location(location).createdDate(createdDate).fileName(fileName.toString()).saveMe))
+    val resource = Resource.create.creator(creator).format(format).
+      location(location).createdDate(createdDate).fileName(fileName.toString()).saveMe
+    theResource(Full(resource))
   }
 
   def render(xhtml: NodeSeq): NodeSeq =
