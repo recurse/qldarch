@@ -12,7 +12,7 @@ class Resources extends Logger {
         ".recorder *" #> Text(r.creator) &
         ".format *" #> Text(r.format) &
         ".location *" #> Text(r.location) &
-        ".date_recorded *" #> Text(r.createdDate) &
+        ".date_recorded *" #> Text(r.createdDate.toString) &
         ".file_name *" #> Text(r.fileName) &
         ".view" #> (".link [href]" #> ("/resources/view/" + r.id)) &
         ".edit" #> (".link [href]" #> ("/resources/edit/" + r.id)))

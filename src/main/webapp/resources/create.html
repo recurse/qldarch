@@ -18,4 +18,13 @@
   </choose:get>
 
   </lift:snippet>
+  <script type="text/javascript">
+    $(function() {
+      $( "#createdDate" ).datepicker({
+        defaultDate: -7,
+        dateFormat: "yy/mm/dd",
+        showAnim: "slideDown"
+      });
+    });
+  </script>
 </lift:surround>

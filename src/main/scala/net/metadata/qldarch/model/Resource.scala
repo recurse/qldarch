@@ -11,7 +11,7 @@ class Resource extends LongKeyedMapper[Resource]
   object creator extends MappedString(this, 50)
   object format extends MappedString(this, 50)
   object location extends MappedString(this, 100)
-  object createdDate extends MappedString(this, 15)
+  object createdDate extends MappedString(this, 20)
   object fileName extends MappedString(this, 50)
 }
 

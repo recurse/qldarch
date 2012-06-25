@@ -40,7 +40,7 @@ class UploadResource extends Logger {
            "creator" -> SHtml.text(creator, creator = _),
            "format" -> SHtml.text(format, format = _),
            "location" -> SHtml.text(location, location = _),
-           "createdDate" -> SHtml.text(createdDate, createdDate = _),
+           "createdDate" -> SHtml.text(createdDate, createdDate = _, "id" -> "createdDate"),
            "file_upload" -> SHtml.fileUpload(f => theUpload(Full(f))),
            "submit" -> SHtml.submit("Submit Resource", doUpload)
            );
