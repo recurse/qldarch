@@ -1,6 +1,8 @@
 lift_proto.db.h2.db
 *.swp
 
+data
+
 target
 
 project/target
