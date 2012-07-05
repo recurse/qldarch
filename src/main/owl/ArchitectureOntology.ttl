@@ -4,35 +4,40 @@
 # Licensed Apache 2.0
 #
 
-@prefix qarch: <http://qldarch.net/ns/rdf/2012-06/terms#>.
 @prefix : <http://qldarch.net/ns/rdf/2012-06/terms#>.
 @prefix rdf: <http://www.w3c.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix xsd: <http://www.w3c.org/2001/XMLSchema#>.
 @prefix aglsterms: <http://www.agls.gov.au/agls/terms/>.
-@prefix dcterms: <http://purl.org/dc/terms>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix dcam: <http://purl.org/dc/dcam/>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix doap: <http://usefulinc.com/ns/doap#>.
-@prefix skos: <http://www.w3.org/2004/02/skos/core>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+
+<> a owl:Ontology .
+
+:label a owl:AnnotationProperty ;
+    rdfs:subPropertyOf rdfs:label .
 
 #
 # Classes
 #
 
-qarch:Entity a owl:Class ;
+:Entity a owl:Class ;
     rdfs:subClassOf owl:Thing .
     
-qarch:Structure a owl:Class ;
+:Structure a owl:Class ;
     rdfs:subClassOf :Entity .
 
-qarch:Building a owl:Class ;
+:Building a owl:Class ;
     rdfs:subClassOf :Structure .
 
-qarch:BuildingExtension a owl:Class ;
+:BuildingExtension a owl:Class ;
     rdfs:subClassOf :Building .
 
-qarch:Bridge a owl:Class ;
+:Bridge a owl:Class ;
     rdfs:subClassOf :Structure .
 
 foaf:Agent a owl:Class ;
@@ -43,115 +48,344 @@ foaf:Person a owl:Class ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Person> .
     rdfs:subClassOf foaf:Agent .
 
-qarch:Firm a owl:Class ;
+:Firm a owl:Class ;
     rdfs:subClassOf foaf:Agent .
 
-qarch:DigitalObject a owl:Class ;
+:DigitalObject a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:comment "This will be replaced by a reconciliation with FRBR Work/Expression distinction".
+
+:Photograph a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Drawing a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Plan a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Book a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Article a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Interview a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:EventRecording a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Story a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+:Transcript a owl:Class ;
     rdfs:subClassOf :Entity .
 
-qarch:Photograph a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
+:DigitalObjectType a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:comment "This will be replaced by a reconciliation with FRBR Work/Expression distinction".
+    rdfs:comment "One of these two should probably be replaced with a controlled vocabulary".
 
-qarch:Drawing a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
-
-qarch:Plan a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
-
-qarch:Book a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
-
-qarch:Article a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
-
-qarch:Interview a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
-
-qarch:EventRecording a owl:Class ;
-    rdfs:subClassOf :DigitalObject .
-
-qarch:Transcript a owl:Class ;
-    rdfs:subClassOf :Entity .
-
-qarch:DigitalObjectType a owl:Class ;
-    rdfs:subClassOf :Entity .
-
-qarch:Sound a owl:Class ;
+:Sound a owl:Class ;
     rdfs:subClassOf :DigitalObjectType .
 
-qarch:StillImage a owl:Class ;
+:StillImage a owl:Class ;
     rdfs:subClassOf :DigitalObjectType .
 
-qarch:Text a owl:Class ;
+:Text a owl:Class ;
     rdfs:subClassOf :DigitalObjectType .
 
-qarch:MovingImage a owl:Class ;
+:MovingImage a owl:Class ;
     rdfs:subClassOf :DigitalObjectType .
 
-qarch:Collection a owl:Class ;
+:Collection a owl:Class ;
     rdfs:subClassOf :DigitalObjectType .
 
-qarch:Story a owl:Class ;
-    rdfs:subClassOf :Collection .
-
-qarch:Event a owl:Class ;
+:Event a owl:Class ;
     rdfs:subClassOf :Entity .
 
-qarch:Construction a owl:Class ;
+:Construction a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Completion a owl:Class ;
+:Completion a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Renovation a owl:Class ;
+:Renovation a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Demolition a owl:Class ;
+:Demolition a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Opening a owl:Class ;
+:Opening a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Conference a owl:Class ;
+:Conference a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Place a owl:Class ;
+:Place a owl:Class ;
     rdfs:subClassOf :Entity .
 
-qarch:Project a owl:Class ;
+:Project a owl:Class ;
     rdfs:subClassOf :Event .
 
-qarch:Relationship a owl:Class ;
-    rdfs:subClassOf :Entity .
+:Relationship a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:subClassOf rdf:Statement .
 
-qarch:Authorship a owl:Class ;
+:Authorship a owl:Class ;
     rdfs:subClassOf :Relationship .
 
-qarch:Employment a owl:Class ;
+:Employment a owl:Class ;
     rdfs:subClassOf :Relationship .
 
-qarch:Role a owl:Class ;
+:Role a owl:Class ;
     rdfs:subClassOf :Relationship .
 
-qarch:Award a owl:Class ;
+:Award a owl:Class ;
     rdfs:subClassOf :Entity .
+
+:Period a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:comment "This should be aligned with CIDOC E52_Time-Span if possible" .
+
+:TopicConcept a owl:Class ;
+    rdfs:subClassOf dcam:VocabularyEncodingScheme ;
+    rdfs:subClassOf skos:Concept .
+
+:RoleConcept a owl:Class ;
+    rdfs:subClassOf dcam:VocabularyEncodingScheme ;
+    rdfs:subClassOf skos:Concept .
 
 #
-# Object Properties
+# Properties
 #
 
-qarch:location a owl:ObjectProperty ;
-    rdfs:label "Has Location" ;
-    rdfs:domain qarch:Building ;
+:identifier a owl:DatatypeProperty ;
+    :label "System Identifier" .
+
+dcterms:identifier a owl:DatatypeProperty ;
+    :label "External Identifier" ;
+    rdfs:isDefinedBy dcterms:identifier .
+
+:location a owl:ObjectProperty ;
+    :label "Has Location" ;
+    rdfs:domain :Building ;
     rdfs:range [ a owl:Class ;
         owl:unionOf ( :Building :Place ) ] ;
     rdfs:comment "Need to consider location as a structure, locality, or co-ordinate of significance" .
 
-foaf:name a owl:DatatypeProperty
-    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_name> .
+foaf:name a owl:DatatypeProperty ;
+    :label "Name" ;
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_name> ;
+    rdfs:comment "This is to be used to name Structures, Agents, Persons, and Projects" .
+
+:relatedEvent a owl:ObjectProperty ;
+    :label "Related Event" ;
+    rdfs:domain :Structure ;
+    rdfs:range :Event .
+
+:receivedAward a owl:ObjectProperty ;
+    :label "Received Award" ;
+    rdfs:domain [ a owl:Class ;
+        owl:unionOf ( :Building :Agent ) ] ;
+    rdfs:range :Award .
 
 foaf:familyName a owl:DatatypeProperty
+    :label "Family Name" ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_familyName> .
 
 foaf:givenName a owl:DatatypeProperty
+    :label "Given Name" ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_givenName> .
+
+dcterms:title a owl:DatatypeProperty ;
+    rdfs:isDefinedBy dcterms:title ;
+    :label "Title" .
+
+:qualification a owl:DatatypeProperty ;
+    :label "Qualification" ;
+    rdfs:domain foaf:Person .
+
+:taughtBy a owl:ObjectProperty ;
+    :label "Taught By" ;
+    rdfs:domain foaf:Person ;
+    rdfs:range foaf:Person .
+
+:mentoredBy a owl:ObjectProperty ;
+    :label "Mentored By" ;
+    rdfs:domain foaf:Person ;
+    rdfs:range foaf:Person .
+
+:employedBy a owl:ObjectProperty ;
+    :label "Employed By" ;
+    rdfs:domain foaf:Person ;
+    rdfs:range :Firm .
+
+:hasPartner a owl:ObjectProperty ;
+    :label "Has Partner" ;
+    rdfs:domain :Firm ;
+    rdfs:range foaf:Person .
+
+:precededBy a owl:ObjectProperty ;
+    :label "Preceded By" ;
+    rdfs:domain :Firm ;
+    rdfs:range :Firm .
+
+:supersededBy a owl:ObjectProperty ;
+    :label "Superseded By" ;
+    rdfs:domain :Firm ;
+    rdfs:range :Firm .
+
+:periodOccured a owl:ObjectProperty ;
+    :label "Occured during period" ;
+    rdfs:domain [ a owl:Class ;
+        owl:unionOf ( :Place :Event :Relationship ) ] ;
+    rdfs:range :Period .
+
+dcterms:creator a owl:ObjectProperty ;
+    :label "Creator" ;
+    rdfs:isDefinedBy dcterms:creator .
+
+dcterms:title a owl:DataProperty ;
+    :label "Title" ;
+    rdfs:isDefinedBy dcterms:title .
+
+dcterms:description a owl:DataProperty ;
+    :label "Description" ;
+    rdfs:isDefinedBy dcterms:description .
+
+:hasSubject a owl:ObjectProperty ;
+    :label "Has Subject" ;
+    rdfs:subClassOf dcterms:subject ;
+    rdfs:domain :DigitalObject ;
+    rdfs:range :Topic .
+
+dcterms:created a owl:DataProperty ;
+    :label "Date Created" ;
+    rdfs:isDefinedBy dcterms:created .
+
+dcterms:format a owl:DataProperty ;
+    :label "Format" ;
+    rdfs:isDefinedBy dcterms:format .
+
+:reresentsArtifact a owl:ObjectPropety ;
+    :label "Represents Artifact" ;
+    rdfs:comment "This property is a place holder for a future alignment with FRBRoo. Where it will be replaced by an encoding of the Work/Expression distinction." .
+
+dcterms:rights a owl:DataProperty ;
+    :label "Rights" ;
+    rdfs:domain :DigitalObject ;
+    rdfs:comment "Currently a plain text statement of IP status of the work. If required can model this further" .
+
+:submitter a owl:ObjectProperty ;
+    :label "Submitter" ;
+    rdfs:domain :DigitalObject ;
+    rdfs:range foaf:Person .
+
+:dateSubmitted a owl:DataProperty ;
+    :label "Date Submitted" ;
+    rdfs:domain :DigitalObject ;
+    rdfs:range xsd:date .
+
+:sourceFileName a owl:DataProperty ;
+    :label "Original File Name" ;
+    rdfs:domain :DigitalObject .
+
+:systemLocation a owl:DataProperty ;
+    :label "System Location" ;
+    rdfs:domain :DigitalObject ;
+    rdfs:range xsd:anyURI .
+
+dcterms:isPartOf a owl:ObjectProperty ;
+    :label "Is Part Of" ;
+    owl:inverseOf dcterms:hasPart ;
+    rdfs:isDefinedBy dcterms:isPartOf .
+
+dcterms:hasPart a owl:ObjectProperty ;
+    :label "Has Part" ;
+    owl:inverseOf dcterms:isPartOf ;
+    rdfs:isDefinedBy dcterms:hasPart .
+
+dcterms:coverage a owl:ObjectProperty ;
+    :label "Coverage" ;
+    rdfs:isDefinedBy dcterms:coverage .
+
+:interviewer a owl:ObjectProperty ;
+    :label "Interviewer" ;
+    rdfs:domain :Interview ;
+    rdfs:range foaf:Person .
+
+:interviewee a owl:ObjectProperty ;
+    :label "Interviewee" ;
+    rdfs:domain :Interview ;
+    rdfs:range foaf:Person .
+
+:coversEvent a owl:ObjectProperty ;
+    :label "Covers Event" ;
+    rdfs:domain :EventRecording ;
+    rdfs:range :Event .
+
+:transcriber a owl:ObjectProperty ;
+    :label "Transcriber" ;
+    rdfs:domain :Document ;
+    rdfs:range foaf:Person .
+
+:sampleSize a owl:DataProperty ;
+    :label "Sample Size" ;
+    rdfs:domain :Sound ;
+    rdfs:comment "Will probably have to define sub-type of xsd:Decimal for this. As far as I am aware, most stores don't handle complex data types." .
+
+:samplingRate a owl:DataProperty ;
+    :label "Sampling Rate" ;
+    rdfs:domain :Sound ;
+    rdfs:comment "Will probably have to define sub-type of xsd:Decimal for this. As far as I am aware, most stores don't handle complex data types." .
+
+:resolution a owl:DataProperty ;
+    :label "Resolution" ;
+    rdfs:domain :Image .
+
+:isParticipant a owl:ObjectProperty ;
+    :label "Has Participant" ;
+    rdfs:domain foaf:Person ;
+    rdfs:range :Event .
+
+:hasRole a owl:ObjectProperty ;
+    :label "Has Role" ;
+    rdfs:domain foaf:Person ;
+    rdfs:range :RoleConcept .
+
+:hasRecording a owl:ObjectProperty ;
+    :label "Has Recording" ;
+    rdfs:domain :Story ;
+    rdfs:range :DigitalObject .
+
+:toldBy a owl:ObjectProperty ;
+    :label "Told By" ;
+    rdfs:domain :Story ;
+    rdfs:range foaf:Person .
+
+:hasTranscript a owl:ObjectProperty ;
+    :label "Has Transcript" ;
+    rdfs:domain :DigitalObject ;
+    rdfs:range :Document .
+
+:periodStart a owl:DataProperty ;
+    :label "Period Start" ;
+    rdfs:domain :Period ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment "This property is a reification of the dcterm:Period Syntax Encoding Scheme." .
+
+:periodEnd a owl:DataProperty ;
+    :label "Period End" ;
+    rdfs:domain :Period ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment "This property is a reification of the dcterm:Period Syntax Encoding Scheme." .
+
+:periodName a owl:DataProperty ;
+    :label "Period Name" ;
+    rdfs:domain :Period ;
+    rdfs:range xsd:string ;
+    rdfs:comment "This property is a reification of the dcterm:Period Syntax Encoding Scheme." .
+
+# vim: set ai si sw=4 sts=4 ts=4 expandtab:
