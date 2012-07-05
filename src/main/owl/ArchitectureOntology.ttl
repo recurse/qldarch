@@ -1,0 +1,157 @@
+#
+# Ontology for an Oral History of Architecture
+# (c) eResearch Laboratory, School of ITEE, The University of Queensland
+# Licensed Apache 2.0
+#
+
+@prefix qarch: <http://qldarch.net/ns/rdf/2012-06/terms#>.
+@prefix : <http://qldarch.net/ns/rdf/2012-06/terms#>.
+@prefix rdf: <http://www.w3c.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3c.org/2001/XMLSchema#>.
+@prefix aglsterms: <http://www.agls.gov.au/agls/terms/>.
+@prefix dcterms: <http://purl.org/dc/terms>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core>.
+
+#
+# Classes
+#
+
+qarch:Entity a owl:Class ;
+    rdfs:subClassOf owl:Thing .
+    
+qarch:Structure a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:Building a owl:Class ;
+    rdfs:subClassOf :Structure .
+
+qarch:BuildingExtension a owl:Class ;
+    rdfs:subClassOf :Building .
+
+qarch:Bridge a owl:Class ;
+    rdfs:subClassOf :Structure .
+
+foaf:Agent a owl:Class ;
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Agent> .
+    rdfs:subClassOf :Entity .
+
+foaf:Person a owl:Class ;
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Person> .
+    rdfs:subClassOf foaf:Agent .
+
+qarch:Firm a owl:Class ;
+    rdfs:subClassOf foaf:Agent .
+
+qarch:DigitalObject a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:Photograph a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:Drawing a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:Plan a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:Book a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:Article a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:Interview a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:EventRecording a owl:Class ;
+    rdfs:subClassOf :DigitalObject .
+
+qarch:Transcript a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:DigitalObjectType a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:Sound a owl:Class ;
+    rdfs:subClassOf :DigitalObjectType .
+
+qarch:StillImage a owl:Class ;
+    rdfs:subClassOf :DigitalObjectType .
+
+qarch:Text a owl:Class ;
+    rdfs:subClassOf :DigitalObjectType .
+
+qarch:MovingImage a owl:Class ;
+    rdfs:subClassOf :DigitalObjectType .
+
+qarch:Collection a owl:Class ;
+    rdfs:subClassOf :DigitalObjectType .
+
+qarch:Story a owl:Class ;
+    rdfs:subClassOf :Collection .
+
+qarch:Event a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:Construction a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Completion a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Renovation a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Demolition a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Opening a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Conference a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Place a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:Project a owl:Class ;
+    rdfs:subClassOf :Event .
+
+qarch:Relationship a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+qarch:Authorship a owl:Class ;
+    rdfs:subClassOf :Relationship .
+
+qarch:Employment a owl:Class ;
+    rdfs:subClassOf :Relationship .
+
+qarch:Role a owl:Class ;
+    rdfs:subClassOf :Relationship .
+
+qarch:Award a owl:Class ;
+    rdfs:subClassOf :Entity .
+
+#
+# Object Properties
+#
+
+qarch:location a owl:ObjectProperty ;
+    rdfs:label "Has Location" ;
+    rdfs:domain qarch:Building ;
+    rdfs:range [ a owl:Class ;
+        owl:unionOf ( :Building :Place ) ] ;
+    rdfs:comment "Need to consider location as a structure, locality, or co-ordinate of significance" .
+
+foaf:name a owl:DatatypeProperty
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_name> .
+
+foaf:familyName a owl:DatatypeProperty
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_familyName> .
+
+foaf:givenName a owl:DatatypeProperty
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_givenName> .
