@@ -16,7 +16,7 @@
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix skos: <http://www.w3.org/2004/02/skos/core#>.
 
-<> a owl:Ontology .
+: a owl:Ontology .
 
 :label a owl:AnnotationProperty ;
     rdfs:subPropertyOf rdfs:label .
@@ -41,11 +41,11 @@
     rdfs:subClassOf :Structure .
 
 foaf:Agent a owl:Class ;
-    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Agent> .
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Agent> ;
     rdfs:subClassOf :Entity .
 
 foaf:Person a owl:Class ;
-    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Person> .
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Person> ;
     rdfs:subClassOf foaf:Agent .
 
 :Firm a owl:Class ;
@@ -84,7 +84,7 @@ foaf:Person a owl:Class ;
 
 :DigitalObjectType a owl:Class ;
     rdfs:subClassOf :Entity ;
-    rdfs:comment "This will be replaced by a reconciliation with FRBR Work/Expression distinction".
+    rdfs:comment "This will be replaced by a reconciliation with FRBR Work/Expression distinction" ;
     rdfs:comment "One of these two should probably be replaced with a controlled vocabulary".
 
 :Sound a owl:Class ;
@@ -191,11 +191,11 @@ foaf:name a owl:DatatypeProperty ;
         owl:unionOf ( :Building :Agent ) ] ;
     rdfs:range :Award .
 
-foaf:familyName a owl:DatatypeProperty
+foaf:familyName a owl:DatatypeProperty ;
     :label "Family Name" ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_familyName> .
 
-foaf:givenName a owl:DatatypeProperty
+foaf:givenName a owl:DatatypeProperty ;
     :label "Given Name" ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_givenName> .
 
