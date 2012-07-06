@@ -21,22 +21,22 @@
 # Preliminaries
 #
 
-: a owl:Ontology .
+<http://qldarch.net/ns/rdf/2012-06/terms#> a owl:Ontology .
 
 #
 # OWL as RDFS header, redundant if using OWL, but allows OWL file to be used
 # within an RDFS reasoner unchanged.
 # 
-
-owl:Class rdfs:subClassOf rdfs:Class .
-
-owl:AnnotationProperty rdfs:subClassOf rdf:Property .
-
-owl:ObjectProperty rdfs:subClassOf rdfs:Property .
-
-owl:DatatypeProperty rdfs:subClassOf rdf:Property ;
-    rdfs:domain rdfs:Resource ;
-    rdfs:range rdfs:Literal .
+# 
+# owl:Class rdfs:subClassOf rdfs:Class .
+# 
+# owl:AnnotationProperty rdfs:subClassOf rdf:Property .
+# 
+# owl:ObjectProperty rdfs:subClassOf rdfs:Property .
+# 
+# owl:DatatypeProperty rdfs:subClassOf rdf:Property ;
+#     rdfs:domain rdfs:Resource ;
+#     rdfs:range rdfs:Literal .
 
 
 #
@@ -53,18 +53,18 @@ owl:DatatypeProperty rdfs:subClassOf rdf:Property ;
 #
 
 :Entity a owl:Class ;
-    :label "Top for concepts related by this vocabularly" .
+    rdfs:comment "Top for concepts related by this vocabularly" .
     
 :TemporalEntity a owl:Class ;
     rdfs:subClassOf :Entity .
 
 :StructureOrAgent a owl:Class ;
-    rdfs:subClassOf :Entity ;
+    rdfs:subClassOf :Entity .
 #    owl:unionOf ( :Structure foaf:Agent ) .
 
 :Structure a owl:Class ;
     rdfs:subClassOf geo:SpatialThing ;
-    rdfs:subClassOf :StructureOrAgent ;
+    rdfs:subClassOf :StructureOrAgent .
 
 :Building a owl:Class ;
     rdfs:subClassOf :Structure .
@@ -76,7 +76,7 @@ owl:DatatypeProperty rdfs:subClassOf rdf:Property ;
     rdfs:subClassOf :Structure .
 
 foaf:Agent a owl:Class ;
-    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Agent> .
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_Agent> ;
     rdfs:subClassOf :StructureOrAgent .
 
 foaf:Person a owl:Class ;
@@ -245,10 +245,6 @@ foaf:givenName a owl:DatatypeProperty ;
     :label "Given Name" ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_givenName> .
 
-dcterms:title a owl:DatatypeProperty ;
-    rdfs:isDefinedBy dcterms:title ;
-    :label "Title" .
-
 :qualification a owl:DatatypeProperty ;
     :label "Qualification" ;
     rdfs:domain foaf:Person .
@@ -293,8 +289,8 @@ dcterms:creator a owl:ObjectProperty ;
     rdfs:isDefinedBy dcterms:creator .
 
 dcterms:title a owl:DatatypeProperty ;
-    :label "Title" ;
-    rdfs:isDefinedBy dcterms:title .
+    rdfs:isDefinedBy dcterms:title ;
+    :label "Title" .
 
 dcterms:description a owl:DatatypeProperty ;
     :label "Description" ;
@@ -304,7 +300,7 @@ dcterms:description a owl:DatatypeProperty ;
     :label "Has Subject" ;
     rdfs:subClassOf dcterms:subject ;
     rdfs:domain :DigitalObject ;
-    rdfs:range :Topic .
+    rdfs:range :TopicConcept .
 
 dcterms:created a owl:DatatypeProperty ;
     :label "Date Created" ;
