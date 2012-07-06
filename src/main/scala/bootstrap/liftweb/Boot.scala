@@ -53,10 +53,15 @@ class Boot {
     LiftRules.addToPackages("net.metadata.qldarch")
 
     // build sitemap
-    val entries = (List(Menu("Home") / "index",
-                        Menu("List Resources") / "resources" / "index",
-                        Menu("Submit Resource") / "resources" / "create")
-                        ) ::: Resource.menus ::: Person.menus
+    val entries = List(Menu(Loc("Home", List("index"), "Home")),
+                       Menu(Loc("Search", List("resources", "index"), "Search/Browse")),
+                       Menu(Loc("Upload", List("resources", "create"), "Upload")),
+                       Menu("Manage Vocab") / "vocab" submenus(Person.menus:_*))
+
+//    val entries = List(Menu("Home") / "index",
+//                        Menu("Search/Browse") / "resources" / "index",
+//                        Menu("Upload") / "resources" / "create",
+//                        Menu("Manage Vocab", peopleMenu) / "vocab")
     
     LiftRules.uriNotFound.prepend(NamedPF("404handler"){
       case (req,failure) => NotFoundAsTemplate(
