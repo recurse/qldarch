@@ -19,19 +19,21 @@ package net.metadata.qldarch.model
 
 import net.liftweb.mapper._
 
-class Person extends LongKeyedMapper[Person]
-    with IdPK
-    with OneToMany[Long,Person] {
-  def getSingleton = Person
+class TopicConcept extends LongKeyedMapper[TopicConcept]
+    with IdPK {
+//    with OneToMany[Long,TopicConcept] {
+  def getSingleton = TopicConcept
 
-  object givenName extends MappedString(this, 50)
-  object familyName extends MappedString(this, 50)
-  object title extends MappedString(this, 50)
-  object resources extends MappedOneToMany(Resource, Resource.creator)
+  object label extends MappedString(this, 50)
+//  object broader extends MappedLongForeignKey(this, TopicConcept)
+//  object narrower extends MappedOneToMany(TopicConcept, TopicConcept.broader)
 
-  def forDisplay = title + " " + givenName + " " + familyName
+  def forDisplay = label //+ "(a " + broader + ")"
 }
 
-object Person extends Person with LongKeyedMetaMapper[Person] with CRUDify[Long,Person] {
-  override def dbTableName = "people"
+object TopicConcept extends TopicConcept with LongKeyedMetaMapper[TopicConcept] with CRUDify[Long,TopicConcept] {
+  override def dbTableName = "TopicConcept"
+  
+  // Need to figure out how to create this top concept.
+//  val top:TopicConcept = TopicConcept.create.label("TopConcept").broader(top).saveMe
 }

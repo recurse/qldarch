@@ -39,8 +39,8 @@ class Resource extends LongKeyedMapper[Resource]
   <fileName>{fileName}</fileName>
   <creator>
     <title>{creator.obj.map(_.title.toString).openOr("")}</title>
-    <firstName>{creator.obj.map(_.firstName.toString).openOr("")}</firstName>
-    <lastName>{creator.obj.map(_.lastName.toString).openOr("")}</lastName>
+    <givenName>{creator.obj.map(_.givenName.toString).openOr("")}</givenName>
+    <familyName>{creator.obj.map(_.familyName.toString).openOr("")}</familyName>
   </creator>
 </resource>
   }

@@ -80,7 +80,7 @@ class UploadResource extends Logger {
   }
 
   def render(xhtml: NodeSeq): NodeSeq = {
-    val persons = Person.findAll().map(p => (p.id.toString, p.firstName + " " + p.lastName))
+    val persons = Person.findAll().map(p => (p.id.toString, p.givenName + " " + p.familyName))
 
     if (S.get_?)
       bind("request", chooseTemplate("choose", "get", xhtml),

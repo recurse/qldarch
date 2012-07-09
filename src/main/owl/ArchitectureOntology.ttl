@@ -237,6 +237,10 @@ foaf:name a owl:DatatypeProperty ;
     rdfs:domain :StructureOrAgent ;
     rdfs:range :Award .
 
+foaf:title a owl:DatatypeProperty ;
+    :label "Title" ;
+    rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_title> .
+
 foaf:familyName a owl:DatatypeProperty ;
     :label "Family Name" ;
     rdfs:isDefinedBy <http://http://xmlns.com/foaf/spec/#term_familyName> .
