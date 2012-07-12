@@ -23,7 +23,7 @@ import mapper.{Schemifier, DB, StandardDBVendor, DefaultConnectionIdentifier}
 import net.liftweb.http.{LiftRules, NotFoundAsTemplate, ParsePath, OnDiskFileParamHolder}
 import sitemap.{SiteMap, Menu, Loc}
 import util.{NamedPF, Props}
-import net.metadata.qldarch.model.{Resource, Person, TopicConcept}
+import net.metadata.qldarch.model._
 
 class Boot {
   def boot {
@@ -44,7 +44,8 @@ class Boot {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, Resource, Person, TopicConcept)
+    Schemifier.schemify(true, Schemifier.infoF _, Resource, Person, TopicConcept, MimeType)
+    MimeType.postInit
   
     // Make sure we cache uploads to disk
     LiftRules.handleMimeFile = OnDiskFileParamHolder.apply
@@ -56,8 +57,10 @@ class Boot {
     val entries = List(Menu(Loc("Home", List("index"), "Home")),
                        Menu(Loc("Search", List("resources", "index"), "Search/Browse")),
                        Menu(Loc("Upload", List("resources", "create"), "Upload")),
-                       Menu("Manage Vocab") / "vocab" submenus(
-                           (Person.menus ::: TopicConcept.menus):_*))
+                       Menu("Manage Vocab") / "vocab" submenus(List(
+                          Menu("People") / "people" submenus(Person.menus:_*),
+                          Menu("Topics") / "topics" submenus(TopicConcept.menus:_*),
+                          Menu("Formats") / "formats" submenus(MimeType.menus:_*)):_*))
 
 //    val entries = List(Menu("Home") / "index",
 //                        Menu("Search/Browse") / "resources" / "index",

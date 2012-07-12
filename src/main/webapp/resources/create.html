@@ -3,6 +3,9 @@
   <choose:post>
   <table class="create_class" id="create_page">
   <tr>
+  <td>Title:</td><td><request:title/></td>
+  </tr>
+  <tr>
   <td>File name:</td><td><request:file_name/></td>
   </tr>
   <tr>
@@ -17,13 +20,15 @@
   <choose:get>
   <table class="create_class" id="create_page">
   <tr>
-  <td>Creator:</td><td><request:creator/></td>
+    <td>Creator:</td><td><request:creator/></td>
+    <td><a href="/people/create.html">Create new person</a></td>
   </tr>
   <tr>
-  <td>Format:</td><td><request:format/></td>
+    <td>Format:</td><td><request:format/></td>
+    <td><a href="/MimeType/create.html">Create new format</a></td>
   </tr>
   <tr>
-  <td>Location:</td><td><request:location/></td>
+  <td>Title:</td><td><request:title/></td>
   </tr>
   <tr>
   <td>Created Date:</td><td><request:createdDate/></td>

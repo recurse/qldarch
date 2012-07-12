@@ -27,11 +27,11 @@ import net.metadata.qldarch.model.Resource
 class Resources extends Logger {
   def list =
     ".row *" #> Resource.findAll().map(r =>
+      ".title *" #> Text(r.title) &
       ".recorder *" #> Text(r.creator.obj.map(c => c.forDisplay).openOr("Unknown recorder")) &
-        ".format *" #> Text(r.format) &
-        ".location *" #> Text(r.location) &
-        ".date_recorded *" #> Text(r.createdDate.toString) &
-        ".file_name *" #> Text(r.fileName) &
-        ".view" #> (".link [href]" #> ("/resources/view/" + r.id)) &
-        ".edit" #> (".link [href]" #> ("/resources/edit/" + r.id)))
+      ".format *" #> Text(r.format.obj.map(f => f.forDisplay).openOr("Unknown mimetype")) &
+      ".date_recorded *" #> Text(r.createdDate.toString) &
+      ".file_name *" #> Text(r.fileName) &
+      ".view" #> (".link [href]" #> ("/resources/view/" + r.id)) &
+      ".edit" #> (".link [href]" #> ("/resources/edit/" + r.id)))
 }

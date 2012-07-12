@@ -21,18 +21,21 @@ import scala.xml.{NodeSeq, Text}
 import net.liftweb.util.Helpers._
 import net.liftweb.common._
 import net.liftweb.http._
+import net.metadata.qldarch.model.MimeType
 import net.metadata.qldarch.model.Person
 import net.metadata.qldarch.model.Resource
 import java.io.{File,FileInputStream,FileOutputStream,PrintWriter}
+import net.liftweb.util.DefaultDateTimeConverter
 
 class UploadResource extends Logger {
   private object theUpload extends RequestVar[Box[FileParamHolder]](Empty)
   private object theResource extends RequestVar[Box[Resource]](Empty)
 
-  private var creator:Box[Person] = Empty;
-  private var format=""
-  private var location=""
+  private var creator:Box[Person] = Empty
+  private var format:Box[MimeType]= Empty
+  private var title=""
   private var createdDate=""
+  private var description=""
 
   // Replace this with Fedora Commons or some other repository
   private val dataDir = new File("data/")
@@ -66,7 +69,7 @@ class UploadResource extends Logger {
 
         theResource(creator match {
           case Full(c) => Full(Resource.create.creator(creator).format(format).
-              location(location).createdDate(createdDate).fileName(archFile.getPath).saveMe)
+              createdDate(DefaultDateTimeConverter.parseDate(createdDate).openOr(null)).fileName(archFile.getPath).title(title).saveMe)
           case _ => Empty
         })
         theResource.is.foreach(r => {
@@ -81,21 +84,23 @@ class UploadResource extends Logger {
 
   def render(xhtml: NodeSeq): NodeSeq = {
     val persons = Person.findAll().map(p => (p.id.toString, p.givenName + " " + p.familyName))
+    val formats = MimeType.findAll().map(m => (m.id.toString, m.mimetype.toString))
 
     if (S.get_?)
       bind("request", chooseTemplate("choose", "get", xhtml),
            "creator" -> SHtml.select(persons, Empty, id => creator = Person.find(id.toLong)),
-           "format" -> SHtml.text(format, format = _),
-           "location" -> SHtml.text(location, location = _),
+           "format" -> SHtml.select(formats, Empty, id => format = MimeType.find(id.toLong)),
+           "title" -> SHtml.text(title, title = _),
            "createdDate" -> SHtml.text(createdDate, createdDate = _, "id" -> "createdDate"),
            "file_upload" -> SHtml.fileUpload(f => theUpload(Full(f))),
            "submit" -> SHtml.submit("Submit Resource", doUpload)
            );
     else
       bind("request", chooseTemplate("choose", "post", xhtml),
+           "title" -> theResource.is.map(r => Text(r.title)),
            "file_name" -> theResource.is.map(r => Text(r.fileName)),
            "creator" -> theResource.is.map(r => Text(r.creator.obj.map(c => c.forDisplay).openOr("Unknown Creator"))),
-           "format" -> theResource.is.map(r => Text(r.format))
-      );
+         "format" -> theResource.is.map(r => Text(r.format.obj.map(m => m.forDisplay).openOr("Unrecognised MimeType")))
+     )
   }
 }

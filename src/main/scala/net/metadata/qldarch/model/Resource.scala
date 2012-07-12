@@ -26,15 +26,27 @@ class Resource extends LongKeyedMapper[Resource]
   def getSingleton = Resource
 
   object creator extends MappedLongForeignKey(this, Person)
-  object format extends MappedString(this, 50)
-  object location extends MappedString(this, 100)
-  object createdDate extends MappedString(this, 20)
+  object title extends MappedString(this, 100)
+  object format extends MappedLongForeignKey(this, MimeType)
+  object externalIdentifier extends MappedString(this, 100)
+  object description extends MappedText(this)
+// FIXME: This should be a MappedManyToMany, and requires TopicConcept to work.
+// Will also need to figure out how to make the UI work for this.
+//  object subject extends MappedLongForeignKey(this, TopicConcept)
+  object rights extends MappedString(this, 200)
+  object createdDate extends MappedDate(this)
   object fileName extends MappedString(this, 200)
+// FIXME: Get this working as well. Requires user management.
+//  object submitter extends MappedLongForeignKey(this, User)
+//  object submittedDate extends MappedDate(this)
 
   override def toXml = {
 <resource>
-  <format>{format}</format>
-  <location>{location}</location>
+  <title>{title}</title>
+  <format>{format.obj.map(_.mimetype.toString).openOr("")}</format>
+  <externalIdentifier>{externalIdentifier}</externalIdentifier>
+  <description>{description}</description>
+  <rights>{rights}</rights>
   <createdDate>{createdDate}</createdDate>
   <fileName>{fileName}</fileName>
   <creator>
@@ -52,6 +64,6 @@ object Resource extends Resource
 
   override def dbTableName = "resources"
   override def createMenuLoc = Empty
-  override def deleteMenuLoc = Empty
+  override def editMenuLoc = Empty
   override def showAllMenuLoc = Empty
 }
