@@ -1,5 +1,10 @@
 <lift:surround with="persistent" at="content">
     <div id="use">
+      <script>
+        $(function() {
+          convertlinks();
+        });
+      </script>
       <lift:bind name="content" />
     </div>
 </lift:surround>
