@@ -14,31 +14,47 @@
     <link href="/css/blueprint/plugins/fancy-type/screen.css" rel="stylesheet" type="text/css" media="screen, projection"/>
     <link href="/jquery/css/eggplant/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css"/>
     <link href="/uploader.css" rel="stylesheet" type="text/css"/>
-<!--    <script id="jquery" src="/jquery/js/jquery-1.7.2.min.js" type="text/javascript"></script>-->
-    <script id="jquery" src="/classpath/jquery.js" type="text/javascript"></script>
+    <script id="jquery" src="/jquery/development-bundle/jquery-1.7.2.js" type="text/javascript"></script>
+<!--    <script id="jquery" src="/classpath/jquery.js" type="text/javascript"></script>-->
     <script id="json" src="/classpath/json.js" type="text/javascript"></script>
     <script id="jquery-ui" src="/jquery/js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
     <script type="text/javascript">
 //<![CDATA[
       function makemenu(menulist, target, displayed) {
         target.append("<ul/>");
+        var ul = target.find("ul");
         menulist.map(function(item) {
-          var li = target.find("ul").append("<li><a href='" + item.uri + "'>" + item.text + "</a></li>");
           if (item.children.length > 0) {
-            makemenu(item.children, target.find("li:last"), false);
+            ul.append('<li><a class="menuhead" href="' + item.uri + '">' + item.text + '</a></li>');
+            makemenu(item.children, ul.find("li:last"), false);
+            ul.find("ul").hide();
+          } else {
+            ul.append('<li><a class="menulink" href="' + item.uri + '">' + item.text + '</a></li>');
           }
         });
-        if (!displayed) {
-          target.find("ul").children().hide();
-          target.find("a:first").click(function(e) {
-            target.find("ul:first").children().toggle();
-            e.preventDefault();
-          });
-        }
+
+        target.children(".menuhead").click(function(e) {
+          e.preventDefault();
+          $(this).next().toggle();
+        });
       }
+
       $(function () {
         $("#menu").empty();
         makemenu(lift_menu.menu, $("#menu"), true);
+        $("#menu .menulink").click(function(e) {
+          e.preventDefault();
+          $.get($(this).attr("href"),
+            function(data) {
+              $("#target").html($("#use", data));
+            }, "xml");
+
+/*
+          var link = $(this).attr("href") + " #use";
+          console.log(link);
+          $("#target").load("/index #use");
+*/
+        });
       })
 // ]]>
     </script>
@@ -67,9 +83,7 @@
         <hr class="space" />
         <lift:bind name="content" />
       </div>
-      <div id="target" class="column span-17 last">
-        Replace Me
-      </div>
+      <div id="target" class="column span-17 last" />
 
       <hr />
       <div class="column span-23 last" style="text-align: center">
