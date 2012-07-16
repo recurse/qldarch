@@ -7,13 +7,13 @@
     <script id="jquery" src="/jquery/development-bundle/jquery-1.7.2.js" type="text/javascript"></script>
     <script>
         function convertlinks() {
-          var links = $("a:not(.direct)").find(":not(.converted)");
-          console.log(links);
+          var links = $("a:not(.direct):not(.converted)");
           links.click(function(e) {
             e.preventDefault();
             $.get($(this).attr("href"),
               function(data) {
                 $("#target").html($("#use", data));
+                convertlinks();
               }, "xml");
           });
           links.addClass("converted");
