@@ -29,6 +29,7 @@ class Resources extends Logger {
     ".row *" #> Resource.findAll().map(r =>
       ".title *" #> Text(r.title) &
       ".recorder *" #> Text(r.creator.obj.map(c => c.forDisplay).openOr("Unknown recorder")) &
+      ".collection *" #> Text(r.collection.obj.map(c => c.forDisplay).openOr("Unknown collection")) &
       ".format *" #> Text(r.format.obj.map(f => f.forDisplay).openOr("Unknown mimetype")) &
       ".date_recorded *" #> Text(r.createdDate.toString) &
       ".file_name *" #> Text(r.fileName) &

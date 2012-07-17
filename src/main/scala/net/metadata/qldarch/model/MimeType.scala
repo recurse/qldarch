@@ -24,7 +24,9 @@ class MimeType extends LongKeyedMapper[MimeType]
     with OneToMany[Long,MimeType] {
   def getSingleton = MimeType
 
-  object mimetype extends MappedString(this, 50)
+  object mimetype extends MappedString(this, 50) {
+    override def displayName = "Mime Type"
+  }
   object resource extends MappedOneToMany(Resource, Resource.format)
 
   def forDisplay = mimetype.toString

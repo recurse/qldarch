@@ -44,7 +44,10 @@ class Boot {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, Resource, Person, TopicConcept, MimeType)
+    Schemifier.schemify(true, Schemifier.infoF _,
+      Resource, CollectionResource, Person, TopicConcept, MimeType)
+
+    // Initialise MimeType defaults
     MimeType.postInit
   
     // Make sure we cache uploads to disk
@@ -54,10 +57,11 @@ class Boot {
     LiftRules.addToPackages("net.metadata.qldarch")
 
     // build sitemap
-    val entries = List(Menu(Loc("Home", List("index"), "Home")),
+    val entries = List(Menu("Home") / "index",
                        Menu(Loc("Search", List("resources", "index"), "Search/Browse")),
-                       Menu(Loc("Upload", List("resources", "create"), "Upload")),
-                       Menu("Manage Vocab") / "vocab" submenus(List(
+                       Menu(Loc("Upload", List("resources", "create"), "Upload"))) :::
+                   CollectionResource.menus :::
+                   List(Menu("Manage Vocab") / "vocab" submenus(List(
                           Menu("People") / "people" submenus(Person.menus:_*),
                           Menu("Topics") / "topics" submenus(TopicConcept.menus:_*),
                           Menu("Formats") / "formats" submenus(MimeType.menus:_*)):_*))

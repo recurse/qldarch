@@ -24,9 +24,18 @@ class Person extends LongKeyedMapper[Person]
     with OneToMany[Long,Person] {
   def getSingleton = Person
 
-  object givenName extends MappedString(this, 50)
-  object familyName extends MappedString(this, 50)
-  object title extends MappedString(this, 50)
+  object givenName extends MappedString(this, 50) {
+    override def displayName = "Given Name"
+    override def dbNotNull_? = true
+  }
+  object familyName extends MappedString(this, 50) {
+    override def displayName = "Family Name"
+    override def dbNotNull_? = true
+  }
+  object title extends MappedString(this, 50) {
+    override def displayName = "Title"
+    override def dbNotNull_? = false
+  }
   object resources extends MappedOneToMany(Resource, Resource.creator)
 
   def forDisplay = title + " " + givenName + " " + familyName

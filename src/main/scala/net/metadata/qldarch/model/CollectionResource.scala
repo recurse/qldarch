@@ -20,73 +20,63 @@ package net.metadata.qldarch.model
 import net.liftweb.common.{Empty, Full}
 import net.liftweb.mapper._
 import net.liftweb.sitemap.{SiteMap, Menu, Loc}
+import java.util.Date
 
-class Resource extends LongKeyedMapper[Resource]
+class CollectionResource extends LongKeyedMapper[CollectionResource]
     with IdPK {
 
-  def getSingleton = Resource
+  def getSingleton = CollectionResource
 
-
-  object collection extends MappedLongForeignKey(this, CollectionResource) {
-    override def displayName = "Collection"
-    override def validSelectValues = Full(CollectionResource.findAll().map(c => (c.id.toLong, c.forDisplay)))
-  }
   object creator extends MappedLongForeignKey(this, Person) {
     override def displayName = "Creator"
+    override def dbNotNull_? = true
+    override def validSelectValues = Full(Person.findAll().map(p => (p.id.toLong, p.forDisplay)))
   }
   object title extends MappedString(this, 100) {
     override def displayName = "Title"
-  }
-  object format extends MappedLongForeignKey(this, MimeType) {
-    override def displayName = "File Format"
+    override def dbNotNull_? = true
   }
   object externalIdentifier extends MappedString(this, 100) {
     override def displayName = "External Identifier"
+    override def dbNotNull_? = false
   }
   object description extends MappedText(this) {
     override def displayName = "Description"
+    override def dbNotNull_? = false
   }
-// FIXME: This should be a MappedManyToMany, and requires TopicConcept to work.
-// Will also need to figure out how to make the UI work for this.
-//  object subject extends MappedLongForeignKey(this, TopicConcept)
   object rights extends MappedString(this, 200) {
     override def displayName = "IP Rights"
+    override def dbNotNull_? = true
   }
   object createdDate extends MappedDate(this) {
     override def displayName = "Created Date"
+    override def dbNotNull_? = false
+    override def defaultValue = new Date()
   }
-  object fileName extends MappedString(this, 200) {
-    override def displayName = "File Name"
-  }
-// FIXME: Get this working as well. Requires user management.
-//  object submitter extends MappedLongForeignKey(this, User)
-//  object submittedDate extends MappedDate(this)
+
+  def forDisplay = title.toString
 
   override def toXml = {
-<resource>
+<collection>
   <title>{title}</title>
-  <format>{format.obj.map(_.mimetype.toString).openOr("")}</format>
   <externalIdentifier>{externalIdentifier}</externalIdentifier>
   <description>{description}</description>
   <rights>{rights}</rights>
   <createdDate>{createdDate}</createdDate>
-  <fileName>{fileName}</fileName>
   <creator>
     <title>{creator.obj.map(_.title.toString).openOr("")}</title>
     <givenName>{creator.obj.map(_.givenName.toString).openOr("")}</givenName>
     <familyName>{creator.obj.map(_.familyName.toString).openOr("")}</familyName>
   </creator>
-</resource>
+</collection>
   }
 }
 
-object Resource extends Resource
-    with LongKeyedMetaMapper[Resource]
-    with CRUDify[Long,Resource] {
+object CollectionResource extends CollectionResource
+    with LongKeyedMetaMapper[CollectionResource]
+    with CRUDify[Long,CollectionResource] {
 
-  override def dbTableName = "resources"
-  override def createMenuLoc = Empty
-  override def showAllMenuLoc = Empty
-  override def fieldsForEditing = List(title, format, externalIdentifier, description, rights)
+  override def dbTableName = "collections"
+  override def fieldsForEditing = List(creator, title, externalIdentifier, description, rights)
 }
 

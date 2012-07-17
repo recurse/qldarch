@@ -24,6 +24,7 @@ import net.liftweb.http._
 import net.metadata.qldarch.model.MimeType
 import net.metadata.qldarch.model.Person
 import net.metadata.qldarch.model.Resource
+import net.metadata.qldarch.model.CollectionResource
 import java.io.{File,FileInputStream,FileOutputStream,PrintWriter}
 import net.liftweb.util.DefaultDateTimeConverter
 
@@ -32,6 +33,7 @@ class UploadResource extends Logger {
   private object theResource extends RequestVar[Box[Resource]](Empty)
 
   private var creator:Box[Person] = Empty
+  private var collection:Box[CollectionResource] = Empty
   private var format:Box[MimeType]= Empty
   private var title=""
   private var createdDate=""
@@ -68,7 +70,7 @@ class UploadResource extends Logger {
         oc.close
 
         theResource(creator match {
-          case Full(c) => Full(Resource.create.creator(creator).format(format).
+          case Full(c) => Full(Resource.create.collection(collection).creator(creator).format(format).
               createdDate(DefaultDateTimeConverter.parseDate(createdDate).openOr(null)).fileName(archFile.getPath).title(title).saveMe)
           case _ => Empty
         })
@@ -85,10 +87,12 @@ class UploadResource extends Logger {
   def render(xhtml: NodeSeq): NodeSeq = {
     val persons = Person.findAll().map(p => (p.id.toString, p.givenName + " " + p.familyName))
     val formats = MimeType.findAll().map(m => (m.id.toString, m.mimetype.toString))
+    val collections = CollectionResource.findAll().map(c => (c.id.toString, c.forDisplay))
 
     if (S.get_?)
       bind("request", chooseTemplate("choose", "get", xhtml),
            "creator" -> SHtml.select(persons, Empty, id => creator = Person.find(id.toLong)),
+           "collection" -> SHtml.select(collections, Empty, id => collection = CollectionResource.find(id.toLong)),
            "format" -> SHtml.select(formats, Empty, id => format = MimeType.find(id.toLong)),
            "title" -> SHtml.text(title, title = _),
            "createdDate" -> SHtml.text(createdDate, createdDate = _, "id" -> "createdDate"),

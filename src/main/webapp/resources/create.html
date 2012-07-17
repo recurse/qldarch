@@ -3,6 +3,9 @@
   <choose:post>
   <table class="create_class" id="create_page">
   <tr>
+  <td>Collection:</td><td><request:collection/></td>
+  </tr>
+  <tr>
   <td>Title:</td><td><request:title/></td>
   </tr>
   <tr>
@@ -19,6 +22,10 @@
 
   <choose:get>
   <table class="create_class" id="create_page">
+  <tr>
+    <td>Collection:</td><td><request:collection/></td>
+    <td><a href="/collections/create.html">Create new collection</a></td>
+  </tr>
   <tr>
     <td>Creator:</td><td><request:creator/></td>
     <td><a href="/people/create.html">Create new person</a></td>

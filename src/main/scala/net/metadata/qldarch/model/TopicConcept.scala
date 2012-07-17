@@ -24,7 +24,9 @@ class TopicConcept extends LongKeyedMapper[TopicConcept]
 //    with OneToMany[Long,TopicConcept] {
   def getSingleton = TopicConcept
 
-  object label extends MappedString(this, 50)
+  object label extends MappedString(this, 50) {
+    override def displayName = "Label"
+  }
 //  object broader extends MappedLongForeignKey(this, TopicConcept)
 //  object narrower extends MappedOneToMany(TopicConcept, TopicConcept.broader)
 
