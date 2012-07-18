@@ -21,6 +21,7 @@ import net.liftweb.common.{Empty, Full}
 import net.liftweb.mapper._
 import net.liftweb.sitemap.{SiteMap, Menu, Loc}
 import java.util.Date
+import java.io.{File, PrintWriter}
 
 class CollectionResource extends LongKeyedMapper[CollectionResource]
     with IdPK {
@@ -53,6 +54,10 @@ class CollectionResource extends LongKeyedMapper[CollectionResource]
     override def dbNotNull_? = false
     override def defaultValue = new Date()
   }
+  object filepath extends MappedString(this, 100) {
+    override def displayName = "File Path"
+    override def dbNotNull_? = true
+  }
 
   def forDisplay = title.toString
 
@@ -76,7 +81,26 @@ object CollectionResource extends CollectionResource
     with LongKeyedMetaMapper[CollectionResource]
     with CRUDify[Long,CollectionResource] {
 
+  val dataDir = new File("data/")
+
   override def dbTableName = "collections"
   override def fieldsForEditing = List(creator, title, externalIdentifier, description, rights)
+  override def beforeSave = List( c => {
+    val filepath = """\s""".r.replaceAllIn(c.title.toString, "") + c.createdDate.getTime().toString
+    c.filepath(filepath)
+    val cdir = new File(dataDir, filepath)
+    if (cdir.exists()) {
+      throw new IllegalStateException("Collection path already exists")
+    } else {
+      if (!cdir.mkdir()) {
+        throw new IllegalStateException("Could not create collection directory");
+      }
+
+      val metaFile = new File(cdir, filepath + ".xml")
+      val ob = new PrintWriter(metaFile)
+      ob.write(c.toXml.toString)
+      ob.close()
+    }
+  });
 }
 

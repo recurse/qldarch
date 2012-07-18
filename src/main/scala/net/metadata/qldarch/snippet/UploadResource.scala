@@ -40,8 +40,6 @@ class UploadResource extends Logger {
   private var description=""
 
   // Replace this with Fedora Commons or some other repository
-  private val dataDir = new File("data/")
-
   def doUpload () {
     warn("doUpload called")
     val (clientName:String, tempFile:File) = theUpload.is match {
@@ -52,6 +50,8 @@ class UploadResource extends Logger {
       }
       case _ => S.error("Error obtaining resource")
     }
+
+    val dataDir = new File(collection.open_!.filepath.toString)
 
     if (!dataDir.exists && !dataDir.mkdir()) {
       S.error("Could not make data directory")
