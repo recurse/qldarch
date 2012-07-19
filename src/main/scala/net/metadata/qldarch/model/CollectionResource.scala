@@ -17,14 +17,16 @@
  */
 package net.metadata.qldarch.model
 
-import net.liftweb.common.{Empty, Full}
+import net.liftweb.common.{Empty, Failure, Full, Logger}
 import net.liftweb.mapper._
 import net.liftweb.sitemap.{SiteMap, Menu, Loc}
+import net.liftweb.util.Props
 import java.util.Date
 import java.io.{File, PrintWriter}
+import scala.xml.Text
 
 class CollectionResource extends LongKeyedMapper[CollectionResource]
-    with IdPK {
+    with IdPK with Logger {
 
   def getSingleton = CollectionResource
 
@@ -32,6 +34,13 @@ class CollectionResource extends LongKeyedMapper[CollectionResource]
     override def displayName = "Creator"
     override def dbNotNull_? = true
     override def validSelectValues = Full(Person.findAll().map(p => (p.id.toLong, p.forDisplay)))
+    override def asHtml = Text(obj match {
+        case Full(p) => p.forDisplay
+        case _ => {
+          error("Error obtaining Person for " + obj)
+          "Unknown person"
+        }
+      });
   }
   object title extends MappedString(this, 100) {
     override def displayName = "Title"
@@ -81,14 +90,24 @@ object CollectionResource extends CollectionResource
     with LongKeyedMetaMapper[CollectionResource]
     with CRUDify[Long,CollectionResource] {
 
-  val dataDir = new File("data/")
+  val dataPath = Props.get("net.metadata.qldarch.DataDirectory") match {
+    case Full(x) => x
+    case Failure(e, t, c) => throw new IllegalStateException("(" + c + ") DataDirectory could not be obtained: " + e, t openOr null)
+    case Empty => throw new IllegalStateException("DataDirectory property missing")
+  }
+
+  val dataDir = new File(dataPath)
+  if (!dataDir.exists) {
+    error("Could not find: " + dataDir.getAbsoluteFile);
+    throw new IllegalArgumentException("Data Directory does not exist: " + dataDir);
+  }
 
   override def dbTableName = "collections"
   override def fieldsForEditing = List(creator, title, externalIdentifier, description, rights)
   override def beforeSave = List( c => {
-    val filepath = """\s""".r.replaceAllIn(c.title.toString, "") + c.createdDate.getTime().toString
-    c.filepath(filepath)
+    val filepath = """\s""".r.replaceAllIn(c.title.toString, "") + "." + c.createdDate.getTime.toString
     val cdir = new File(dataDir, filepath)
+    c.filepath(cdir.getAbsoluteFile.toString)
     if (cdir.exists()) {
       throw new IllegalStateException("Collection path already exists")
     } else {

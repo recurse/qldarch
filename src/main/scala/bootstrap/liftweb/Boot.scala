@@ -21,7 +21,7 @@ import net.liftweb._
 import net.liftweb.common.{Logger, Logback, Full}
 import mapper.{Schemifier, DB, StandardDBVendor, DefaultConnectionIdentifier}
 import net.liftweb.http.{LiftRules, NotFoundAsTemplate, ParsePath, OnDiskFileParamHolder}
-import sitemap.{SiteMap, Menu, Loc}
+import sitemap._
 import util.{NamedPF, Props}
 import net.metadata.qldarch.model._
 
@@ -59,7 +59,8 @@ class Boot {
     // build sitemap
     val entries = List(Menu("Home") / "index",
                        Menu(Loc("Search", List("resources", "index"), "Search/Browse")),
-                       Menu(Loc("Upload", List("resources", "create"), "Upload"))) :::
+                       Menu(Loc("Upload", List("resources", "create"), "Upload")),
+                       Menu("Resources") / "resources" / ** >> Loc.Hidden >> Loc.Template(() => Resource.viewTemplate) ) :::
                    CollectionResource.menus :::
                    List(Menu("Manage Vocab") / "vocab" submenus(List(
                           Menu("People") / "people" submenus(Person.menus:_*),

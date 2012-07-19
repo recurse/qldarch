@@ -38,7 +38,7 @@ class Person extends LongKeyedMapper[Person]
   }
   object resources extends MappedOneToMany(Resource, Resource.creator)
 
-  def forDisplay = title + " " + givenName + " " + familyName
+  def forDisplay = givenName + " " + familyName
 }
 
 object Person extends Person with LongKeyedMetaMapper[Person] with CRUDify[Long,Person] {

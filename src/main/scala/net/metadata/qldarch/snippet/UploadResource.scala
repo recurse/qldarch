@@ -26,6 +26,7 @@ import net.metadata.qldarch.model.Person
 import net.metadata.qldarch.model.Resource
 import net.metadata.qldarch.model.CollectionResource
 import java.io.{File,FileInputStream,FileOutputStream,PrintWriter}
+import java.util.Date
 import net.liftweb.util.DefaultDateTimeConverter
 
 class UploadResource extends Logger {
@@ -42,7 +43,7 @@ class UploadResource extends Logger {
   // Replace this with Fedora Commons or some other repository
   def doUpload () {
     warn("doUpload called")
-    val (clientName:String, tempFile:File) = theUpload.is match {
+    val (_, tempFile:File) = theUpload.is match {
       case Full(FileParamHolder(_, null, _, _)) => S.error("Empty resource file received")
       case Full(fileHolder @ FileParamHolder(_, mime, _, _)) => fileHolder match {
         case onDisk : OnDiskFileParamHolder => (onDisk.fileName, onDisk.localFile)
@@ -52,17 +53,24 @@ class UploadResource extends Logger {
     }
 
     val dataDir = new File(collection.open_!.filepath.toString)
+    warn("Using " + dataDir);
 
-    if (!dataDir.exists && !dataDir.mkdir()) {
-      S.error("Could not make data directory")
+    if (!dataDir.exists) {
+      error("Data directory does not exist")
+      S.error("Data directory does not exist")
     } else if (!dataDir.isDirectory) {
+      error("Data directory is not a directory")
       S.error("Data directory is not a directory")
     } else {
       val uploadDir = new File(dataDir, tempFile.getName)
       if (!uploadDir.mkdir()) {
+        error("Could not create upload directory")
         S.error("Could not create upload directory")
       } else {
-        val archFile = new File(uploadDir, clientName)
+        val fileDate = DefaultDateTimeConverter.parseDate(createdDate).openOr(new Date())
+        val filename = """\s""".r.replaceAllIn(title.toString, "") + "." + fileDate.getTime.toString
+        val archFile = new File(uploadDir, filename)
+        warn("Copying " + tempFile + " to " + archFile)
         val ic = new FileInputStream(tempFile).getChannel()
         val oc = new FileOutputStream(archFile).getChannel()
         ic.transferTo(0, ic.size, oc)
@@ -71,11 +79,11 @@ class UploadResource extends Logger {
 
         theResource(creator match {
           case Full(c) => Full(Resource.create.collection(collection).creator(creator).format(format).
-              createdDate(DefaultDateTimeConverter.parseDate(createdDate).openOr(null)).fileName(archFile.getPath).title(title).saveMe)
+              createdDate(fileDate).fileName(archFile.getPath).title(title).saveMe)
           case _ => Empty
         })
         theResource.is.foreach(r => {
-          val metaFile = new File(uploadDir, clientName + ".xml")
+          val metaFile = new File(uploadDir, filename + ".xml")
           val ob = new PrintWriter(metaFile)
           ob.write(r.toXml.toString)
           ob.close()
@@ -102,6 +110,7 @@ class UploadResource extends Logger {
     else
       bind("request", chooseTemplate("choose", "post", xhtml),
            "title" -> theResource.is.map(r => Text(r.title)),
+           "collection" -> theResource.is.map(r => Text(r.collection.obj.map(c => c.forDisplay).openOr("Unknown Collection"))),
            "file_name" -> theResource.is.map(r => Text(r.fileName)),
            "creator" -> theResource.is.map(r => Text(r.creator.obj.map(c => c.forDisplay).openOr("Unknown Creator"))),
          "format" -> theResource.is.map(r => Text(r.format.obj.map(m => m.forDisplay).openOr("Unrecognised MimeType")))

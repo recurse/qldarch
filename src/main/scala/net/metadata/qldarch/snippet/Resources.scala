@@ -32,7 +32,7 @@ class Resources extends Logger {
       ".collection *" #> Text(r.collection.obj.map(c => c.forDisplay).openOr("Unknown collection")) &
       ".format *" #> Text(r.format.obj.map(f => f.forDisplay).openOr("Unknown mimetype")) &
       ".date_recorded *" #> Text(r.createdDate.toString) &
-      ".file_name *" #> Text(r.fileName) &
+      ".file_name *" #> Text(r.fileName.toString.reverse.takeWhile(_ != '/').reverse) &
       ".view" #> (".link [href]" #> ("/resources/view/" + r.id)) &
       ".edit" #> (".link [href]" #> ("/resources/edit/" + r.id)))
 }
