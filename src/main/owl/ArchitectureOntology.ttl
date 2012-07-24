@@ -4,7 +4,7 @@
 # Licensed Apache 2.0
 #
 
-@base <http://qldarch.net/ns/rdf/2012-06/terms#> .
+@base <http://qldarch.net/ns/rdf/2012/06/terms#> .
 
 @prefix : <http://qldarch.net/ns/rdf/2012-06/terms#> .
 @prefix rdf: <http://www.w3c.org/1999/02/22-rdf-syntax-ns#> .
